@@ -1,48 +1,36 @@
-// For all of these, what is the value of a when the function gets called with the alert()
-// #1
-function q1() {
-    var a = 5;
-    if (a > 1) {
-        a = 3;
+const app = new Vue({
+    el: '#app',
+    data: {
+        titulo: 'GYM con Vue',
+        tareas: [],
+        nuevaTarea: ''
+    },
+    methods: {
+        agregarTarea: function() {
+            this.tareas.push({
+                nombre: this.nuevaTarea,
+                estado: false
+            });
+            this.nuevaTarea = '';
+            localStorage.setItem('gym-vue', JSON.stringify(this.tareas));
+        },
+        editarTarea: function(index) {
+            this.tareas[index].estado = true;
+            localStorage.setItem('gym-vue', JSON.stringify(this.tareas));
+
+        },
+        eliminar: function(index) {
+            this.tareas.splice(index, 1);
+            localStorage.setItem('gym-vue', JSON.stringify(this.tareas));
+
+        }
+    },
+    created: function() {
+        let datosDB = JSON.parse(localStorage.getItem('gym-vue'));
+        if (datosDB === null) {
+            this.tareas = [];
+        } else {
+            this.tareas = datosDB;
+        }
     }
-    alert(a); //a = 3
-}
-
-//#2
-var a = 0;
-
-function q2() {
-    a = 55;
-}
-
-function q22() {
-    alert(a); //a =5
-}
-
-
-//#3
-function q3() {
-    window.a = "hello";
-}
-
-
-function q32() {
-    alert(a); //a ="hello"
-}
-
-//#4
-var a = 1;
-
-function q4() {
-    var a = "test";
-    alert(a); //a="test"
-}
-
-//#5
-var a = 2;
-if (true) {
-    var a = 55;
-    alert(a); //a=5
-}
-
-alert(a); //a=5
+});
